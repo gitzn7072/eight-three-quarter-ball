@@ -1,0 +1,23 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>8¾ Ball screenshot relay</title></head>
+<body>Preparing screenshots…
+<script>
+(async () => {
+  const names = ['en-1-classic-autumn','en-2-fantasy-winter','en-3-classic-summer','en-4-settings',
+                 'he-1-classic-autumn','he-2-fantasy-winter','he-3-classic-summer','he-4-settings'];
+  const files = [];
+  for (const size of ['6.9', '6.1']) {
+    for (const n of names) {
+      const r = await fetch(`${size}/${n}.png`);
+      files.push({ name: `${n}-${size.replace('.', '_')}in.png`, buf: await r.arrayBuffer() });
+    }
+  }
+  if (window.opener) {
+    window.opener.postMessage({ type: 'ss', files }, 'https://appstoreconnect.apple.com');
+    document.body.textContent = `Sent ${files.length} screenshots. You can close this tab.`;
+  } else {
+    document.body.textContent = 'Open this page from App Store Connect.';
+  }
+})();
+</script>
+</body></html>
