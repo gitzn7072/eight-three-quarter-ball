@@ -12,8 +12,9 @@
       files.push({ name: `${n}-${size.replace('.', '_')}in.png`, buf: await r.arrayBuffer() });
     }
   }
-  if (window.opener) {
-    window.opener.postMessage({ type: 'ss', files }, 'https://appstoreconnect.apple.com');
+  const target = window.opener || (window.parent !== window ? window.parent : null);
+  if (target) {
+    target.postMessage({ type: 'ss', files }, 'https://appstoreconnect.apple.com');
     document.body.textContent = `Sent ${files.length} screenshots. You can close this tab.`;
   } else {
     document.body.textContent = 'Open this page from App Store Connect.';
